@@ -1,9 +1,3 @@
-// index.js
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-
-require('win-ca');
-
-
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
@@ -17,30 +11,32 @@ const tmdbRoutes = require("./routes/tmdb");
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// ✅ CORS middleware
+// ✅ CORS for both local + deployed frontend
 app.use(cors({
-  origin: ["http://localhost:5173", "http://localhost:5174"],
+  origin: [
+    "http://localhost:5173",
+    "http://localhost:5174",
+   
+  ],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
 
-// ✅ Parse JSON body
+// ✅ Body parser
 app.use(express.json());
 
-// ✅ Route mounts
+// ✅ API Routes
 app.use("/api/tmdb", tmdbRoutes);
-app.use("/api/movies", movies);        // e.g. /api/movies/:id
-app.use("/api/bookings", bookings);    // e.g. /api/bookings
-app.use("/api/auth", auth);            // e.g. /api/auth/login
+app.use("/api/movies", movies);
+app.use("/api/bookings", bookings);
+app.use("/api/auth", auth);
 
-// ✅ MongoDB connection and server start
+// ✅ MongoDB connect & start server
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 }).then(() => {
-  app.listen(PORT, () => {
-    console.log(`🚀 Server running on http://localhost:${PORT}`);
-  });
+  app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
 }).catch((err) => {
-  console.error("❌ MongoDB error:", err.message);
+  console.error("❌ MongoDB connection error:", err.message);
 });
