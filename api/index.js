@@ -1,28 +1,23 @@
-const serverless = require("serverless-http");
+require("dotenv").config(); // <-- Add this line FIRST
 const express = require("express");
 const mongoose = require("mongoose");
+const serverless = require("serverless-http");
 const cors = require("cors");
-const dotenv = require("dotenv");
 
-dotenv.config();
+
 const app = express();
-
-// Middleware
 app.use(cors());
 app.use(express.json());
 
-// Routes (example route)
+// Replace with your actual routes
 app.get("/", (req, res) => {
-  res.send("Movie Mingle API is live on Vercel!");
+  res.send("Server is working!");
 });
 
-// MongoDB Connection
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => console.log("MongoDB Connected"))
-.catch((err) => console.log(err));
+// MongoDB connection
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("Connected to MongoDB"))
+  .catch((err) => console.error("MongoDB connection error:", err));
 
-// Export handler
+// ✅ Correct export for Vercel serverless
 module.exports.handler = serverless(app);
