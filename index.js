@@ -13,7 +13,7 @@ const app = express();
 app.use(cors({
   origin: [
     "http://localhost:5173",
-    "https://your-frontend.vercel.app" // Replace with your frontend Vercel URL
+     // Replace with your frontend Vercel URL
   ],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
