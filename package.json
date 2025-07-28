@@ -2,9 +2,11 @@
   "name": "server",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {
-    "start": "node index.js"
-  },
+ "scripts": {
+  "start": "node index.js",
+  "build": "echo 'No build needed for Express backend'"
+}
+,
   "keywords": [],
   "author": "",
   "license": "ISC",
