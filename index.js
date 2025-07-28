@@ -9,34 +9,32 @@ const auth = require("./routes/auth");
 const tmdbRoutes = require("./routes/tmdb");
 
 const app = express();
-const PORT = process.env.PORT || 5000;
 
-// ✅ CORS for both local + deployed frontend
 app.use(cors({
   origin: [
     "http://localhost:5173",
-    "http://localhost:5174",
-   
+    "https://your-frontend.vercel.app" // Replace with your frontend Vercel URL
   ],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
 
-// ✅ Body parser
 app.use(express.json());
 
-// ✅ API Routes
 app.use("/api/tmdb", tmdbRoutes);
 app.use("/api/movies", movies);
 app.use("/api/bookings", bookings);
 app.use("/api/auth", auth);
 
-// ✅ MongoDB connect & start server
+// ✅ Connect MongoDB only once
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 }).then(() => {
-  app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+  console.log("✅ Connected to MongoDB");
 }).catch((err) => {
   console.error("❌ MongoDB connection error:", err.message);
 });
+
+// ✅ Export app instead of listen()
+module.exports = app;
